@@ -18,9 +18,9 @@ async def get_fah_stats():
 async def update_count(stats):
     hs, ts, twus = stats
 
-    await bot.get_channel(581941336580816917).edit(name=await format.convert_string(hs[0] + ' : ') + str(hs[1]))
-    await bot.get_channel(581941356780584990).edit(name=await format.convert_string(f'total score : {ts}'))
-    await bot.get_channel().edit(name=await format.convert_string(f'total wus : {twus}'))
+    await bot.get_channel(os.getenv('HIGHSCORE')).edit(name=await format.convert_string(hs[0] + ' : ') + str(hs[1]))
+    await bot.get_channel(os.getemv('TOTALSCORE')).edit(name=await format.convert_string(f'total score : {ts}'))
+    await bot.get_channel(os.getenv('TOTALWUS')).edit(name=await format.convert_string(f'total wus : {twus}'))
 
 @bot.event
 async def on_member_join(member):
@@ -39,4 +39,4 @@ async def on_ready():
     print('ready')
     await update_count(await get_fah_stats())
 
-bot.run(TOKEN)
+bot.run(os.getenv('TOKEN'))
