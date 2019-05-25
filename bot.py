@@ -39,4 +39,4 @@ async def on_ready():
     print('ready')
     await update_count(await get_fah_stats())
 
-bot.run('NTgxOTEzNjA0MDk0NDI3MTQ2.XOmLUQ.ordy-g6cbl2NIqf7_PYNDYuffUQ')
+bot.run(TOKEN)
