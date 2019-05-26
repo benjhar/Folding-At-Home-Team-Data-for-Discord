@@ -8,13 +8,17 @@ import time
 bot = commands.Bot(command_prefix='!@#$%^&*()')
 bot.remove_command('help')
 
-async def refresh_loop():
-    await bot.wait_until_ready()
-    counter = 0
-    while not bot.is_closed:
-        counter += 1
-        await update_count(await get_fah_stats())
-        await asyncio.sleep(60) # task runs every 60 seconds
+@bot.event
+async def on_member_join(member):
+    await update_count(await get_fah_stats())
+
+@bot.event
+async def on_member_remove(member):
+    await update_count(await get_fah_stats())
+
+@bot.event
+async def on_member_update(before, after):
+    await update_count(await get_fah_stats())
 
 async def get_fah_stats():
     team = fah.teamstats(235150)
@@ -37,6 +41,6 @@ async def on_ready():
     print(bot.user.name)
     print(bot.user.id)
     print('------')
+    await update_count(await get_fah_stats())
 
-bot.loop.create_task(refresh_loop())
-bot.run('NTgxOTEzNjA0MDk0NDI3MTQ2.XOp_YA.z2vjYpPYZDEbPx4dfzWnEQwhrsA')
+bot.run('NTgxOTEzNjA0MDk0NDI3MTQ2.XOsBsg.eVefkxYotU-KE6ZF2Xh9sKeRJs8')
