@@ -19,8 +19,8 @@ async def update_count(stats):
     hs, ts, twus = stats
 
     await bot.get_channel(581980094373822484).edit(name=await format.convert_string(hs[0] + ' : ') + str(hs[1]))
-    await bot.get_channel(581980129182613505).edit(name=await format.convert_string(f'total score : {ts}'))
-    await bot.get_channel(581980156244131856).edit(name=await format.convert_string(f'total wus : {twus}'))
+    await bot.get_channel(581980129182613505).edit(name=await format.convert_string('total score' + ' : ' + str(ts)))
+    await bot.get_channel(581980156244131856).edit(name=await format.convert_string('total wus' + ' : ' + str(twus)))
 
 @bot.event
 async def on_member_join(member):
