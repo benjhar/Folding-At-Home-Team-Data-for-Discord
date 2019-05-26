@@ -1,7 +1,7 @@
 import requests
 
 def teamstats(teamnum):
-    r = requests.get("https://stats.foldingathome.org/api/team/" + teamnum)
+    r = requests.get("https://stats.foldingathome.org/api/team/" + str(teamnum))
     return r.json()
 
 def highest_scorer(team):
