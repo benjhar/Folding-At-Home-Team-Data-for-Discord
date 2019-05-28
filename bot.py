@@ -73,4 +73,4 @@ async def on_ready():
     print('------')
     await update_count(await get_fah_stats())
 
-bot.run('NTgyNjkxNTkwNzc5NDM3MDYz.XOxgAQ.C7iV5xPCxRboLm3OKH0A0rims1Q')
+bot.run('NTgxOTEzNjA0MDk0NDI3MTQ2.XOx7xg.831JHIIFvgmufjEuwZBuYTnIQQQ')
