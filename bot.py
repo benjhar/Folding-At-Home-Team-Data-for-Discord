@@ -6,11 +6,11 @@ import foldingathome as fah
 import time
 
 team_number = 235150
-channelA = 581941336580816917
-channelB = 581941356780584990
-channelC = 582710022128140314
-embedcolor = 0x4286f4
-bot = commands.Bot(command_prefix='fold ')
+channelA = os.getenv('A')
+channelB = os.getenv('B')
+channelC = os.getenv('C')
+embedcolor = os.getenv('EMBEDCOLOR)
+bot = commands.Bot(command_prefix=os.getenv('PREFIX'))
 bot.remove_command('help')
 
 @bot.command(pass_context=True)
@@ -94,4 +94,4 @@ async def on_ready():
     print('------')
     await update_count(await get_fah_stats())
 
-bot.run('NTgyNjkxNTkwNzc5NDM3MDYz.XOxgAQ.C7iV5xPCxRboLm3OKH0A0rims1Q')
+bot.run(os.getenv('TOKEN'))
