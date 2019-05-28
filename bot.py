@@ -9,8 +9,29 @@ team_number = 235150
 channelA = 581941336580816917
 channelB = 581941356780584990
 channelC = 582710022128140314
+embedcolor = 0x4286f4
 bot = commands.Bot(command_prefix='fold ')
 bot.remove_command('help')
+
+@bot.command(pass_context=True)
+async def help(ctx):
+    embed=discord.Embed(title="Help", description="Here's a list of commands that you can use.", color=embedcolor)
+    embed.add_field(name="leaderboard", value="Usage:\n`fold leaderboard`\nReturns stats on your servers team\n`fold leaderboard <donor>`\nReturns info on a user in your team")
+    embed.add_field(name="team", value="Usage:\n`fold team <team number>`\nReturns stats on the given team.")
+    await ctx.message.channel.send(embed=embed)
+
+@bot.command(pass_context=True)
+async def team(ctx, team=team_number):
+    stats = fah.teamstats(team)
+    description = 'Team {}'.format(stats["name"])
+    rank = "Rank out of {}".format(stats["total_teams"])
+    embed = discord.Embed(title="Folding@Home statistics", description=description, color=embedcolor)
+    embed.add_field(name="Total credits", value=str(stats["credit"]), inline=False)
+    embed.add_field(name="Total work units", value=str(stats["wus"]), inline=False)
+    embed.add_field(name=rank, value=str(stats["rank"]), inline=False)
+    embed.add_field(name="Total number of donors", value=str(len(stats["donors"])), inline=False)
+    embed.set_thumbnail(url=stats["logo"])
+    await ctx.message.channel.send(ctx.message.channel, embed=embed)
 
 @bot.command(pass_context=True)
 async def leaderboard(ctx,donor=None):
@@ -22,7 +43,7 @@ async def leaderboard(ctx,donor=None):
 
         title = 'Folding@Home statistics for {}'.format(stats[0])
         description = "Donor '{}'".format(donor)
-        embed = discord.Embed(title=title, description=description, color=0x4286f4)
+        embed = discord.Embed(title=title, description=description, color=embedcolor)
         embed.add_field(name="Total credits for team", value=stats[1], inline=False)
         embed.add_field(name="Total work units completed for team", value=stats[2], inline=False)
         await ctx.message.channel.send(embed=embed)
@@ -30,7 +51,7 @@ async def leaderboard(ctx,donor=None):
         stats = fah.teamstats(team_number)
         description = 'Team {}'.format(stats["name"])
         rank = "Rank out of {}".format(stats["total_teams"])
-        embed = discord.Embed(title="Folding@Home statistics", description=description, color=0x4286f4)
+        embed = discord.Embed(title="Folding@Home statistics", description=description, color=embedcolor)
         embed.add_field(name="Total credits", value=str(stats["credit"]), inline=False)
         embed.add_field(name="Total work units", value=str(stats["wus"]), inline=False)
         embed.add_field(name=rank, value=str(stats["rank"]), inline=False)
@@ -73,4 +94,4 @@ async def on_ready():
     print('------')
     await update_count(await get_fah_stats())
 
-bot.run('NTgxOTEzNjA0MDk0NDI3MTQ2.XOx7xg.831JHIIFvgmufjEuwZBuYTnIQQQ')
+bot.run('NTgyNjkxNTkwNzc5NDM3MDYz.XOxgAQ.C7iV5xPCxRboLm3OKH0A0rims1Q')
