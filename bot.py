@@ -32,7 +32,7 @@ async def team(ctx, team=team_number):
     embed.add_field(name=rank, value=str(stats["rank"]), inline=False)
     embed.add_field(name="Total number of donors", value=str(len(stats["donors"])), inline=False)
     embed.set_thumbnail(url=stats["logo"])
-    await ctx.message.channel.send(ctx.message.channel, embed=embed)
+    await ctx.message.channel.send(embed=embed)
 
 @bot.command(pass_context=True)
 async def leaderboard(ctx,donor=None):
@@ -58,7 +58,7 @@ async def leaderboard(ctx,donor=None):
         embed.add_field(name=rank, value=str(stats["rank"]), inline=False)
         embed.add_field(name="Total number of donors", value=str(len(stats["donors"])), inline=False)
         embed.set_thumbnail(url=stats["logo"])
-        await ctx.message.channel.send(ctx.message.channel, embed=embed)
+        await ctx.message.channel.send(embed=embed)
 
 @bot.event
 async def on_member_join(member):
