@@ -6,9 +6,9 @@ import foldingathome as fah
 import time
 
 team_number = 235150
-channelA = os.getenv('A')
-channelB = os.getenv('B')
-channelC = os.getenv('C')
+channelA = int(os.getenv('A'))
+channelB = int(os.getenv('B'))
+channelC = int(os.getenv('C'))
 embedcolor = os.getenv('EMBEDCOLOR')
 prefix = os.getenv('PREFIX')
 bot = commands.Bot(command_prefix=prefix)
