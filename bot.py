@@ -9,7 +9,7 @@ team_number = 235150
 channelA = os.getenv('A')
 channelB = os.getenv('B')
 channelC = os.getenv('C')
-embedcolor = os.getenv('EMBEDCOLOR)
+embedcolor = os.getenv('EMBEDCOLOR')
 bot = commands.Bot(command_prefix=os.getenv('PREFIX'))
 bot.remove_command('help')
 
