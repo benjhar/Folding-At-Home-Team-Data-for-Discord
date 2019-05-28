@@ -10,7 +10,8 @@ channelA = os.getenv('A')
 channelB = os.getenv('B')
 channelC = os.getenv('C')
 embedcolor = os.getenv('EMBEDCOLOR')
-bot = commands.Bot(command_prefix=os.getenv('PREFIX'))
+prefix = os.getenv('PREFIX')
+bot = commands.Bot(command_prefix=prefix)
 bot.remove_command('help')
 
 @bot.command(pass_context=True)
@@ -93,5 +94,6 @@ async def on_ready():
     print(bot.user.id)
     print('------')
     await update_count(await get_fah_stats())
+    await bot.change_presence(activity=discord.Game(name=prefix + 'help'))
 
 bot.run(os.getenv('TOKEN'))
