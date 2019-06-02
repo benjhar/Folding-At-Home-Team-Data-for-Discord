@@ -17,8 +17,8 @@ bot.remove_command('help')
 @bot.command(pass_context=True)
 async def help(ctx):
     embed=discord.Embed(title="Help", description="Here's a list of commands that you can use.", color=embedcolor)
-    embed.add_field(name="stats", value="Usage:\n`fold leaderboard`\nReturns stats on your servers team\n`fold leaderboard <donor>`\nReturns info on a user in your team")
-    embed.add_field(name="team", value="Usage:\n`fold team <team number>`\nReturns stats on the given team.")
+    embed.add_field(name="stats", value="Usage:\n`fold stats`\nReturns stats on your servers team\n`fold stats <donor>`\nReturns info on a user in your team", inline=False)
+    embed.add_field(name="team", value="Usage:\n`fold team <team number>`\nReturns stats on the given team.", inline=False)
     await ctx.message.channel.send(embed=embed)
 
 @bot.command(pass_context=True)
