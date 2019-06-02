@@ -17,7 +17,7 @@ bot.remove_command('help')
 @bot.command(pass_context=True)
 async def help(ctx):
     embed=discord.Embed(title="Help", description="Here's a list of commands that you can use.", color=embedcolor)
-    embed.add_field(name="leaderboard", value="Usage:\n`fold leaderboard`\nReturns stats on your servers team\n`fold leaderboard <donor>`\nReturns info on a user in your team")
+    embed.add_field(name="stats", value="Usage:\n`fold leaderboard`\nReturns stats on your servers team\n`fold leaderboard <donor>`\nReturns info on a user in your team")
     embed.add_field(name="team", value="Usage:\n`fold team <team number>`\nReturns stats on the given team.")
     await ctx.message.channel.send(embed=embed)
 
@@ -35,7 +35,7 @@ async def team(ctx, team=team_number):
     await ctx.message.channel.send(embed=embed)
 
 @bot.command(pass_context=True)
-async def leaderboard(ctx,donor=None):
+async def stats(ctx,donor=None):
     if donor:
         try:
             stats = fah.donor_stats(team_number, donor)
