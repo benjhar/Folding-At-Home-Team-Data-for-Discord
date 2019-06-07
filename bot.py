@@ -38,26 +38,26 @@ async def team(ctx, team=team_number):
 async def stats(ctx,donor=None):
     if donor:
         try:
-            stats = fah.donor_stats(team_number, donor)
+            donor = fah.donor(donor, team_number)
         except :
             await ctx.message.channel.send("Something went wrong. You may have entered an invalid donor or there may be a problem reaching Folding@Home, please try again.\nIf this has happened before, please try again later.")
 
-        title = 'Folding@Home statistics for {}'.format(stats[0])
-        description = "Donor '{}'".format(donor)
+        title = 'Folding@Home statistics for {}'.format(donor.name)
+        description = "Donor '{}'".format(donor.name)
         embed = discord.Embed(title=title, description=description, color=embedcolor)
-        embed.add_field(name="Total credits for team", value=stats[1], inline=False)
-        embed.add_field(name="Total work units completed for team", value=stats[2], inline=False)
+        embed.add_field(name="Total credits for team", value=donor.score, inline=False)
+        embed.add_field(name="Total work units completed for team", value=donor.work_units, inline=False)
         await ctx.message.channel.send(embed=embed)
     else:
-        stats = fah.teamstats(team_number)
-        description = 'Team {}'.format(stats["name"])
-        rank = "Rank out of {}".format(stats["total_teams"])
+        team = fah.team(team_number)
+        description = 'Team {}'.format(team.name)
+        rank = "Rank out of {}".format(team.total_teams)
         embed = discord.Embed(title="Folding@Home statistics", description=description, color=embedcolor)
-        embed.add_field(name="Total credits", value=str(stats["credit"]), inline=False)
-        embed.add_field(name="Total work units", value=str(stats["wus"]), inline=False)
-        embed.add_field(name=rank, value=str(stats["rank"]), inline=False)
-        embed.add_field(name="Total number of donors", value=str(len(stats["donors"])), inline=False)
-        embed.set_thumbnail(url=stats["logo"])
+        embed.add_field(name="Total credits", value=str(team.score), inline=False)
+        embed.add_field(name="Total work units", value=str(team.work_units), inline=False)
+        embed.add_field(name=rank, value=str(team.rank), inline=False)
+        embed.add_field(name="Total number of donors", value=str(team.total_donors), inline=False)
+        embed.set_thumbnail(url=team.logo)
         await ctx.message.channel.send(embed=embed)
 
 @bot.event
@@ -73,12 +73,10 @@ async def on_member_update(before, after):
     await update_count(await get_fah_stats())
 
 async def get_fah_stats():
-    team = fah.teamstats(team_number)
-    highest_scorer = fah.highest_scorer(team)
-    team_score = fah.team_score(team)
-    team_wus = fah.team_work_units(team)
-
-    return highest_scorer, team_score, team_wus
+    team = fah.team(235150)
+    highest_scorer = team.highest_scorer
+    score = team.score
+    work_units = team.work_units
 
 async def update_count(stats):
     hs, ts, twus = stats
