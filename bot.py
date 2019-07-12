@@ -136,7 +136,7 @@ async def update_count(stats):
     await bot.get_channel(channelC).edit(
         name=await format.convert_string('total wus' + ' : ' + str(twus)))
     await bot.get_channel(channelD).edit(
-        name=await format.convert_string(mw["name"] + ' : ') + mw["wus"] + format.convert_string(' wus'))
+        name=await format.convert_string(mw["name"] + ' : ' + mw["wus"] + ' wus'))
 
 
 @bot.event
