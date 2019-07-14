@@ -82,7 +82,7 @@ async def stats(ctx, donor=None):
     else:
         team = fah.Team(team_number)
         description = 'Team {}'.format(team.name)
-        rank = "Rank out of {}".format(team.total_teams)
+        rank = "Rank out of {}".format(fah.Team.total_teams)
         embed = discord.Embed(title="Folding@Home statistics",
                               description=description,
                               color=embedcolor)
