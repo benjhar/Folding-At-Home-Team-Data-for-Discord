@@ -1,9 +1,8 @@
+import os, sys, traceback, time, requests  # standard library
 import discord
-from discord.ext import commands
-import os
+from discord.ext import commands  # basic bot imports
 import format
-import foldingathome as fah
-import time
+import foldingathome as fah  # custom libraries
 
 team_number = 235150
 channelA = int(os.getenv("A"))
@@ -12,8 +11,29 @@ channelC = int(os.getenv("C"))
 channelD = int(os.getenv("D"))
 embedcolor = 0x4286F4
 prefix = os.getenv("PREFIX")
+token = os.getenv("TOKEN")
 bot = commands.Bot(command_prefix=prefix)
 bot.remove_command("help")
+
+
+@bot.command(pass_context=True)
+async def restart(ctx):
+    if ctx.author.id == 330404011197071360:
+        await ctx.send(f"♻ {ctx.author.mention} just restarted me.")
+        sys.exit()
+
+
+@bot.command(pass_context=True)
+async def ping(ctx):
+    r = requests.get(
+        "https://discordapp.com/api", headers={"Authorization": f"Bot:{token}"}
+    )
+    latency = r.elapsed.total_seconds()
+    embed = discord.Embed(
+        title="Ping", description=f"Ping data for {bot.user.name}", color=embedcolor
+    )
+    embed.add_field(name=":ping_pong:", value=f"{latency*1000}ms", inline=False)
+    await ctx.channel.send(embed=embed)
 
 
 @bot.command(pass_context=True)
@@ -38,19 +58,23 @@ async def help(ctx):
 
 @bot.command(pass_context=True)
 async def team(ctx, team=team_number):
-    stats = fah.Team(team).stats()
-    description = "Team {}".format(stats["name"])
-    rank = "Rank out of {}".format(stats["total_teams"])
+    team = fah.Team(team)
+    description = f"Team {team.name}"
+    rank = f"Rank out of {team.total_teams}"
     embed = discord.Embed(
         title="Folding@Home statistics", description=description, color=embedcolor
     )
-    embed.add_field(name="Total credits", value=str(stats["credit"]), inline=False)
-    embed.add_field(name="Total work units", value=str(stats["wus"]), inline=False)
-    embed.add_field(name=rank, value=str(stats["rank"]), inline=False)
-    embed.add_field(
-        name="Total number of donors", value=str(len(stats["donors"])), inline=False
-    )
-    embed.set_thumbnail(url=stats["logo"])
+    embed.add_field(name="Total credits", value=str(team.score), inline=False)
+    embed.add_field(name="Total work units", value=str(team.work_units), inline=False)
+    embed.add_field(name=rank, value=str(team.rank), inline=False)
+    if team.total_donors == 1000:
+        embed.add_field(name="Total number of donors", value="1000+", inline=False)
+    else:
+        embed.add_field(
+            name="Total number of donors", value=str(team.total_donors), inline=False
+        )
+    print(team.logo)
+    embed.set_thumbnail(url=team.logo)
     await ctx.channel.send(embed=embed)
 
 
@@ -64,7 +88,7 @@ async def stats(ctx, donor=None):
                 "Something went wrong. You may have entered an invalid donor or there may be a problem reaching Folding@Home, please try again.\nIf this has happened before, please try again later."
             )
 
-        title = "Folding@Home statistics for {}".format(donor.name)
+        title = "Folding@Home statistics for '{}'".format(donor.name)
         description = "Donor '{}'".format(donor.name)
         embed = discord.Embed(title=title, description=description, color=embedcolor)
         embed.add_field(name="Total credits for team", value=donor.score, inline=False)
@@ -73,6 +97,8 @@ async def stats(ctx, donor=None):
             value=donor.work_units,
             inline=False,
         )
+        embed.add_field(name="Rank", value=donor.rank, inline=False)
+        embed.set_thumbnail(url=donor.team["logo"])
         await ctx.channel.send(embed=embed)
     else:
         team = fah.Team(team_number)
@@ -86,9 +112,14 @@ async def stats(ctx, donor=None):
             name="Total work units", value=str(team.work_units), inline=False
         )
         embed.add_field(name=rank, value=str(team.rank), inline=False)
-        embed.add_field(
-            name="Total number of donors", value=str(team.total_donors), inline=False
-        )
+        if team.total_donors == 1000:
+            embed.add_field(name="Total number of donors", value="1000+", inline=False)
+        else:
+            embed.add_field(
+                name="Total number of donors",
+                value=str(team.total_donors),
+                inline=False,
+            )
         embed.set_thumbnail(url=team.logo)
         await ctx.channel.send(embed=embed)
 
@@ -110,10 +141,10 @@ async def on_member_update(before, after):
 
 async def get_fah_stats():
     team = fah.Team(235150)
-    highest_scorer = team.highest_scorer()
-    most_wus = team.most_wus()
-    score = team.score()
-    work_units = team.work_units()
+    highest_scorer = team.highest_scorer
+    most_wus = team.most_wus
+    score = team.score
+    work_units = team.work_units
     highest_scorer["credit"] = format.convert_int(highest_scorer["credit"])
     most_wus["wus"] = format.convert_int(most_wus["wus"])
     return highest_scorer, most_wus, score, work_units
@@ -142,8 +173,13 @@ async def on_ready():
     print(bot.user.name)
     print(bot.user.id)
     print("------")
+    sys.stdout.flush()
     await update_count(await get_fah_stats())
     await bot.change_presence(activity=discord.Game(name=prefix + "help"))
 
 
-bot.run(os.getenv("TOKEN"))
+try:
+    bot.run(token)
+except:
+    print("h")
+    traceback.print_exc(file=sys.stdout)
