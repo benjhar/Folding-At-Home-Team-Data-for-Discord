@@ -1,17 +1,21 @@
 import os, sys, traceback, time, requests  # standard library
 import discord
 from discord.ext import commands  # basic bot imports
-import format
-import foldingathome as fah  # custom libraries
+import format # custom libraries
+import foldingathome as fah
+from environs import Env
+
+env=Env()
+env.read_env()
 
 team_number = 235150
-channelA = int(os.getenv("A"))
-channelB = int(os.getenv("B"))
-channelC = int(os.getenv("C"))
-channelD = int(os.getenv("D"))
+channelA = env.int("CHANNEL_A")
+channelB = env.int("CHANNEL_B")
+channelC = env.int("CHANNEL_C")
+channelD = env.int("CHANNEL_D")
 embedcolor = 0x4286F4
-prefix = os.getenv("PREFIX")
-token = os.getenv("TOKEN")
+prefix = env.str("PREFIX")
+token = env.str("TOKEN")
 bot = commands.Bot(command_prefix=prefix)
 bot.remove_command("help")
 
