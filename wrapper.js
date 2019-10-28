@@ -1,7 +1,6 @@
 const nodeWrap = require('node-wrap')
 const exec = require('child_process')
 const dotenv = require('dotenv');
-dotenv.config({path:'..'});
 var secret = process.env.SECRET
 var repo = process.env.REPO
 let http = require('http');

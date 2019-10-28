@@ -1,11 +1,11 @@
 import os, sys, traceback, time, requests  # standard library
 import discord
 from discord.ext import commands  # basic bot imports
-import format # custom libraries
+import format  # custom libraries
 import foldingathome as fah
 from environs import Env
 
-env=Env()
+env = Env()
 env.read_env()
 
 team_number = 235150
@@ -43,17 +43,17 @@ async def ping(ctx):
 @bot.command(pass_context=True)
 async def help(ctx):
     embed = discord.Embed(
-        title="Help",
+        title="**Help**",
         description="Here's a list of commands that you can use.",
         color=embedcolor,
     )
     embed.add_field(
-        name="stats",
+        name="**stats**",
         value="Usage:\n`fold stats`\nReturns stats on your servers team\n`fold stats <donor>`\nReturns info on a user in your team",
         inline=False,
     )
     embed.add_field(
-        name="team",
+        name="**team**",
         value="Usage:\n`fold team <team number>`\nReturns stats on the given team.",
         inline=False,
     )
