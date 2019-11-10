@@ -24,8 +24,10 @@ bot.remove_command("help")
 async def restart(ctx):
     if ctx.author.id == 330404011197071360:
         await ctx.send(f"♻ {ctx.author.mention} just restarted me.")
-        sys.exit()
-
+        try:
+            sys.exit()
+        except Exception as e:
+            pass
 
 @bot.command(pass_context=True)
 async def ping(ctx):
