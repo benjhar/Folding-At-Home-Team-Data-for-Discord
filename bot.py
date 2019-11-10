@@ -29,6 +29,7 @@ async def restart(ctx):
         except Exception as e:
             pass
 
+
 @bot.command(pass_context=True)
 async def ping(ctx):
     r = requests.get(
@@ -45,17 +46,17 @@ async def ping(ctx):
 @bot.command(pass_context=True)
 async def help(ctx):
     embed = discord.Embed(
-        title="**Help**",
+        title="__Help__",
         description="Here's a list of commands that you can use.",
         color=embedcolor,
     )
     embed.add_field(
-        name="**stats**",
+        name="__stats__",
         value="Usage:\n`fold stats`\nReturns stats on your servers team\n`fold stats <donor>`\nReturns info on a user in your team",
         inline=False,
     )
     embed.add_field(
-        name="**team**",
+        name="__team__",
         value="Usage:\n`fold team <team number>`\nReturns stats on the given team.",
         inline=False,
     )
