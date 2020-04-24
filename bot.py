@@ -148,6 +148,7 @@ async def get_fah_stats():
 
 async def update_count():
     while True:
+        print("update")
         stats = await get_fah_stats()
         hs, mw, ts, twus = stats
 
@@ -163,7 +164,7 @@ async def update_count():
         await bot.get_channel(channelD).edit(
             name=await format.convert_string(mw["name"] + " : " + mw["wus"] + " wus")
         )
-        asyncio.sleep(900)
+        await asyncio.sleep(600)
 
 
 @bot.event
@@ -173,7 +174,7 @@ async def on_ready():
     print(bot.user.id)
     print("------")
     sys.stdout.flush()
-    await update_count(await get_fah_stats())
+    await update_count()
     await bot.change_presence(activity=discord.Game(name=prefix + "help"))
 
 
