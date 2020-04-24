@@ -4,6 +4,7 @@ from discord.ext import commands  # basic bot imports
 import format  # custom libraries
 import foldingathome as fah
 from environs import Env
+import asyncio
 
 env = Env()
 env.read_env()
@@ -26,21 +27,24 @@ async def restart(ctx):
         await ctx.send(f"♻ {ctx.author.mention} just restarted me.")
         try:
             sys.exit()
-        except Exception as e:
+        except:
             pass
 
 
 @bot.command(pass_context=True)
 async def ping(ctx):
-    r = requests.get(
-        "https://discordapp.com/api", headers={"Authorization": f"Bot:{token}"}
-    )
-    latency = r.elapsed.total_seconds()
-    embed = discord.Embed(
-        title="Ping", description=f"Ping data for {bot.user.name}", color=embedcolor
-    )
-    embed.add_field(name=":ping_pong:", value=f"{latency*1000}ms", inline=False)
-    await ctx.channel.send(embed=embed)
+    try:
+        r = requests.get(
+            "https://discordapp.com/api", headers={"Authorization": f"Bot:{token}"}
+        )
+        latency = r.elapsed.total_seconds()
+        embed = discord.Embed(
+            title="Ping", description=f"Ping data for {bot.user.name}", color=embedcolor
+        )
+        embed.add_field(name=":ping_pong:", value=f"{latency*1000}ms", inline=False)
+        await ctx.channel.send(embed=embed)
+    except:
+        pass
 
 
 @bot.command(pass_context=True)
@@ -131,21 +135,6 @@ async def stats(ctx, donor=None):
         await ctx.channel.send(embed=embed)
 
 
-@bot.event
-async def on_member_join(member):
-    await update_count(await get_fah_stats())
-
-
-@bot.event
-async def on_member_remove(member):
-    await update_count(await get_fah_stats())
-
-
-@bot.event
-async def on_member_update(before, after):
-    await update_count(await get_fah_stats())
-
-
 async def get_fah_stats():
     team = fah.Team(235150)
     highest_scorer = team.highest_scorer
@@ -157,21 +146,24 @@ async def get_fah_stats():
     return highest_scorer, most_wus, score, work_units
 
 
-async def update_count(stats):
-    hs, mw, ts, twus = stats
+async def update_count():
+    while True:
+        stats = await get_fah_stats()
+        hs, mw, ts, twus = stats
 
-    await bot.get_channel(channelA).edit(
-        name=await format.convert_string(hs["name"] + " : ") + hs["credit"]
-    )
-    await bot.get_channel(channelB).edit(
-        name=await format.convert_string("total score" + " : " + str(ts))
-    )
-    await bot.get_channel(channelC).edit(
-        name=await format.convert_string("total wus" + " : " + str(twus))
-    )
-    await bot.get_channel(channelD).edit(
-        name=await format.convert_string(mw["name"] + " : " + mw["wus"] + " wus")
-    )
+        await bot.get_channel(channelA).edit(
+            name=await format.convert_string(hs["name"] + " : ") + hs["credit"]
+        )
+        await bot.get_channel(channelB).edit(
+            name=await format.convert_string("total score" + " : " + str(ts))
+        )
+        await bot.get_channel(channelC).edit(
+            name=await format.convert_string("total wus" + " : " + str(twus))
+        )
+        await bot.get_channel(channelD).edit(
+            name=await format.convert_string(mw["name"] + " : " + mw["wus"] + " wus")
+        )
+        asyncio.sleep(900)
 
 
 @bot.event
