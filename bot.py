@@ -148,23 +148,26 @@ async def get_fah_stats():
 
 async def update_count():
     while True:
-        print("update")
-        stats = await get_fah_stats()
-        hs, mw, ts, twus = stats
+        try:
+            print("update")
+            stats = await get_fah_stats()
+            hs, mw, ts, twus = stats
 
-        await bot.get_channel(channelA).edit(
-            name=await format.convert_string(hs["name"] + " : ") + hs["credit"]
-        )
-        await bot.get_channel(channelB).edit(
-            name=await format.convert_string("total score" + " : " + str(ts))
-        )
-        await bot.get_channel(channelC).edit(
-            name=await format.convert_string("total wus" + " : " + str(twus))
-        )
-        await bot.get_channel(channelD).edit(
-            name=await format.convert_string(mw["name"] + " : " + mw["wus"] + " wus")
-        )
-        await asyncio.sleep(600)
+            await bot.get_channel(channelA).edit(
+                name=await format.convert_string(hs["name"] + " : ") + hs["credit"]
+            )
+            await bot.get_channel(channelB).edit(
+                name=await format.convert_string("total score" + " : " + str(ts))
+            )
+            await bot.get_channel(channelC).edit(
+                name=await format.convert_string("total wus" + " : " + str(twus))
+            )
+            await bot.get_channel(channelD).edit(
+                name=await format.convert_string(mw["name"] + " : " + mw["wus"] + " wus")
+            )
+            await asyncio.sleep(600)
+        except Exception as e:
+            print(e)
 
 
 @bot.event
@@ -178,8 +181,4 @@ async def on_ready():
     await bot.change_presence(activity=discord.Game(name=prefix + "help"))
 
 
-try:
-    bot.run(token)
-except:
-    print("h")
-    traceback.print_exc(file=sys.stdout)
+bot.run(token)
