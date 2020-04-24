@@ -1,2 +1,3 @@
 discord.py
 foldingathome==0.1.6
+environs
