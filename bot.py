@@ -26,7 +26,7 @@ async def restart(ctx):
     if ctx.author.id == 330404011197071360:
         await ctx.send(f"♻ {ctx.author.mention} just restarted me.")
         try:
-            sys.exit()
+            sys.exit(0)
         except:
             pass
 
