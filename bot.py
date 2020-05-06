@@ -25,11 +25,13 @@ bot.remove_command("help")
 async def restart(ctx):
     if ctx.author.id == 330404011197071360:
         await ctx.send(f"♻ {ctx.author.mention} just restarted me.")
-        try:
-            sys.exit(0)
-        except:
-            pass
+        print('restart')
 
+@bot.command(pass_context=True)
+async def update(ctx):
+    if ctx.author.id == 330404011197071360:
+        await ctx.send(f"♻+ {ctx.author.mention} just restarted me and asked for an update.")
+        print('update')
 
 @bot.command(pass_context=True)
 async def ping(ctx):
@@ -148,26 +150,23 @@ async def get_fah_stats():
 
 async def update_count():
     while True:
-        try:
-            print("update")
-            stats = await get_fah_stats()
-            hs, mw, ts, twus = stats
+        print("update")
+        stats = await get_fah_stats()
+        hs, mw, ts, twus = stats
 
-            await bot.get_channel(channelA).edit(
-                name=await format.convert_string(hs["name"] + " : ") + hs["credit"]
-            )
-            await bot.get_channel(channelB).edit(
-                name=await format.convert_string("total score" + " : " + str(ts))
-            )
-            await bot.get_channel(channelC).edit(
-                name=await format.convert_string("total wus" + " : " + str(twus))
-            )
-            await bot.get_channel(channelD).edit(
-                name=await format.convert_string(mw["name"] + " : " + mw["wus"] + " wus")
-            )
-            await asyncio.sleep(600)
-        except Exception as e:
-            print(e)
+        await bot.get_channel(channelA).edit(
+            name=await format.convert_string(hs["name"] + " : ") + hs["credit"]
+        )
+        await bot.get_channel(channelB).edit(
+            name=await format.convert_string("total score" + " : " + str(ts))
+        )
+        await bot.get_channel(channelC).edit(
+            name=await format.convert_string("total wus" + " : " + str(twus))
+        )
+        await bot.get_channel(channelD).edit(
+            name=await format.convert_string(mw["name"] + " : " + mw["wus"] + " wus")
+        )
+        await asyncio.sleep(600)
 
 
 @bot.event
@@ -177,8 +176,8 @@ async def on_ready():
     print(bot.user.id)
     print("------")
     sys.stdout.flush()
+    await bot.change_presence(activity=discord.Game(name=f"{prefix}help"))
     await update_count()
-    await bot.change_presence(activity=discord.Game(name=prefix + "help"))
 
 
 bot.run(token)
