@@ -23,10 +23,10 @@ def execute(cmd, log_timestamps=False):
 
 
 def update():
-    print(f'{"-"*10}{"\n"*4}')
+    print(f'{"-"*10}\n\n\n\n')
     for path in execute(["yes", "|", "git", "pull", "https://github.com/thenamesweretakenalready/Folding-At-Home-Team-Data-for-Discord"]):
         print(path, end="")
-    print(f'{"-"*10}{"\n"*4}')
+    print(f'{"-"*10}\n\n\n\n')
 
 
 if __name__ == "__main__":
